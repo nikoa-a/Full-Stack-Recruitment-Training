@@ -4,6 +4,7 @@ const contactModel = require("./models/contact");
 
 const app = express();
 
+app.use(express.static("frontend"));
 app.use(express.json());
 
 const mongo_url = process.env.MONGODB_URL;
