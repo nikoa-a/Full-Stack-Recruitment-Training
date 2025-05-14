@@ -37,8 +37,10 @@ app.get("/api/books", function(req, res) {
 });
 
 app.put("/api/books/:id", function(req, res) {
-    // Yet to do
-    bookModel.replaceOne({"_id": req.params.id}, book).then(function() {
+    bookModel.findById(req.params.id).then(function(book) {
+        book.loaned = !book.loaned;
+        return book.save();
+    }).then(function() {
         return res.status(200).json({"Message": "Success"});
     }).catch(function(err) {
         console.log("Failed to update book. Error:", err);
