@@ -6,9 +6,9 @@ const Schema = mongoose.Schema({
   price: Number
 });
 
-Schema.virtual("id").get(() => {
-  return this._id;
-});
+Schema.virtual("id").get(function() {
+	return this._id;
+}) 
 
 const itemModel = mongoose.model("Item", Schema);
 export default itemModel;

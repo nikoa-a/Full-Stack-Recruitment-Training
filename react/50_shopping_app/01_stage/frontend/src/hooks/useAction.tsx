@@ -59,7 +59,7 @@ const useAction = () => {
             return;
         }
       } else {
-        const errorMessage = "Serverr responded with a status" + response.status +
+        const errorMessage = "Server responded with a status " + response.status +
           " " + response.statusText;
         switch (urlRequest.action) {
           case "getlist": {
@@ -93,7 +93,7 @@ const useAction = () => {
       request: new Request("/api/shopping", {
         method: "GET"
       }),
-      action: "getList"
+      action: "getlist"
     });
   }
 
@@ -102,7 +102,7 @@ const useAction = () => {
       request: new Request("/api/shopping", {
         method: "POST",
         headers: {
-          "Content-Type": "application-json"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(item)
       }),
@@ -124,7 +124,7 @@ const useAction = () => {
       request: new Request("/api/shopping/" + item.id, {
         method: "PUT",
         headers: {
-          "Content-Type": "applicaiton/json"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(item)
       }),
