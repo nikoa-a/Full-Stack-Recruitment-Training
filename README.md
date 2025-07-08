@@ -1,6 +1,6 @@
 ## Full Stack RekryKoulutus
 
-[📱Shopping App | MERN](./react/50_shopping_app/01_stage/)
+📱[Shopping App | MERN](./react/50_shopping_app/02_stage_login/)
 
 ### javascript
 
