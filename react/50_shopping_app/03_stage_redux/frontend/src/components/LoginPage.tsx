@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import User from "../models/User";
+import { register, login, registerFailed } from "../actions/loginActions";
+import type { Action } from "../types/states";
+import type { ThunkDispatch } from "redux-thunk";
+import { useDispatch } from "react-redux";
 
 interface State {
   username: string;
   password: string;
 }
 
-interface Props {
-  register(user: User): void;
-  login(user: User): void;
-  setError(error: string): void;
-}
-
-const LoginPage = (props: Props) => {
+const LoginPage = () => {
   const [state, setState] = useState<State>({
     username: "",
     password: ""
   })
+
+  const dispatch: ThunkDispatch<any, any, Action> = useDispatch();
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState((state) => {
@@ -31,21 +31,21 @@ const LoginPage = (props: Props) => {
   const onRegister = (event: React.SyntheticEvent) => {
     event.preventDefault();
     if(state.username.length < 4 || state.password.length < 8) {
-      props.setError("Username must be at least 4 and password 8 characters long");
+      dispatch(registerFailed("Username must be at least 4 and password 8 characters long"));
       return;
     }
     const user = new User(state.username, state.password);
-    props.register(user);
+    dispatch(register(user));
   }
 
   const onLogin = (event: React.SyntheticEvent) => {
     event.preventDefault();
     if(state.username.length < 4 || state.password.length < 8) {
-      props.setError("Username must be at least 4 and password 8 characters long");
+      dispatch(registerFailed("Username must be at least 4 and password 8 characters long"));
       return;
     }
     const user = new User(state.username, state.password);
-    props.login(user);
+    dispatch(login(user));
   }
 
   return (

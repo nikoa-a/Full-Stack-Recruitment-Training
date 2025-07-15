@@ -5,8 +5,8 @@ import type { LoginState, Action } from '../types/states';
 const getInitialState = (): LoginState => {
   const temp = sessionStorage.getItem("loginstate");
   if (temp) {
-      const state: LoginState = JSON.parse(temp);
-      return state;
+    const state: LoginState = JSON.parse(temp);
+    return state;
   } else {
     return {
       isLogged: false,
