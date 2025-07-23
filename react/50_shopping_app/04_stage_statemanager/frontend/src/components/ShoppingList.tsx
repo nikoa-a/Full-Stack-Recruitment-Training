@@ -1,9 +1,12 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import ShoppingItem from "../models/ShoppingItem";
 import Row from "./Row";
 import RemoveRow from "./RemoveRow";
 import EditRow from "./EditRow";
-import { Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material";
+import { 
+  Table, TableHead, TableBody, TableRow, TableCell, 
+  Box, Button, TextField 
+} from "@mui/material";
 import useAction from "../hooks/useAction";
 import useAppState from "../hooks/useAppState";
 
@@ -12,14 +15,22 @@ interface State {
   editIndex: number;
 }
 
+interface SearchByType {
+  type: string;
+}
+
 const ShoppingList = () => {
   const [state, setState] = useState<State>({
     removeIndex: -1,
     editIndex: -1
   })
 
-  const { list } = useAppState();
-  const { remove, edit } = useAction();
+  const [search, setSearch] = useState<SearchByType>({
+    type: ""
+  })
+
+  const { list, token } = useAppState();
+  const { remove, edit, getList } = useAction();
 
   const changeMode = (index: number, mode: string) => {
     switch (mode) {
@@ -59,6 +70,20 @@ const ShoppingList = () => {
     changeMode(0, "cancel");
   }
 
+  const searchByType = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    getList(token, search.type);
+    setSearch({
+      type: ""
+    })
+  }
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch({
+      type: event.target.value
+    })
+  }
+
   const shoppingItems = list.map((item, index) => {
     if (state.removeIndex === index) {
       return (
@@ -86,20 +111,34 @@ const ShoppingList = () => {
   })
 
   return (
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell>Type</TableCell>
-          <TableCell>Count</TableCell>
-          <TableCell>Price</TableCell>
-          <TableCell>Remove</TableCell>
-          <TableCell>Edit</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {shoppingItems}
-      </TableBody>
-    </Table>
+    <>
+      <Box component="form" onSubmit={searchByType} sx={{ width: "20%", mx: "auto", textAlign: "center" }}>
+        <TextField
+          type="text"
+          name="type"
+          id="type"
+          onChange={onChange}
+          label="Search by type"
+          value={search.type} />
+        <Button type="submit" variant="contained" color="secondary">
+          Search
+        </Button>
+      </Box>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Type</TableCell>
+            <TableCell>Count</TableCell>
+            <TableCell>Price</TableCell>
+            <TableCell>Remove</TableCell>
+            <TableCell>Edit</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {shoppingItems}
+        </TableBody>
+      </Table>
+    </>
   )
 }
 

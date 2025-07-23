@@ -4,7 +4,11 @@ import itemModel from '../models/item.js';
 const router = express.Router();
 
 router.get("/shopping", (req, res) => {
-  itemModel.find({"user": req.session.user}).then((items) => {
+  let query = {"user": req.session.user};
+  if (req.query.type) {
+    query.type = req.query.type
+  }
+  itemModel.find(query).then((items) => {
     return res.status(200).json(items);
   }).catch((err) => {
     console.log("Failed to find shopping items. Error:", err);
