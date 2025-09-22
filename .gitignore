@@ -137,3 +137,6 @@ dist
 
 # Rust
 target
+
+.vscode
+.angular
